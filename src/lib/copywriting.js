@@ -40,7 +40,7 @@ export function step1Note(totalLiabilities, availableCash) {
   if (diff < 0) {
     return {
       variant: 'warning',
-      text: `Your available cash falls $${fmt(-diff)} short of your year-end owing. Consider saving an extra $${fmt(-diff / 12)}/month, or reducing your FHSA/RRSP contributions to free up cash.`,
+      text: `Your available cash falls $${fmt(-diff)} short of your year-end owing. Consider saving an extra $${fmt(-diff / 12)}/month.`,
     };
   }
   if (diff === 0) {
@@ -130,7 +130,7 @@ export const TOOLTIPS = {
   rrspAlreadyContrib:    'Money you have already deposited into your RRSP this calendar year or the first 60 days of the following year. DO NOT include employer-matched contributions.',
   fhsaAlreadyContrib:    'Amount already contributed to your FHSA this calendar year.\nAnnual base limit is $8,000 and the maximum is $16,000 if you have carryforward room.',
   fhsaRoomForYear:       'The amount shown as "Your FHSA participation room" on your CRA Notice of Assessment (NOA). If it\'s your first year with an FHSA, input $8,000.',
-  fhsaLifetimeUsed:      'Total FHSA contributions made in all previous years combined. The engine tracks this to ensure you do not exceed the $40,000 lifetime limit.',
+  fhsaLifetimeUsed:      'Total amount deposited into your FHSA in all previous years combined — regardless of whether you claimed the deduction. You can defer the tax deduction to a future year, but deposits always count against your $40,000 lifetime limit the moment they are made.',
   availableCash:         'Total liquid savings you are willing to allocate toward taxes and registered investments this year.',
 
   // Results panel

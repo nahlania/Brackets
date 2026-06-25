@@ -108,30 +108,30 @@ export const BPA_PARAMS = {
 //
 export const CPP_PARAMS = {
   2025: {
-    ympe:   71300,
-    yampe:  81200,
-    ex:     3500,
-    emR1:   0.0595,  // CPP1 employee (and employer) rate
-    seR1:   0.119,   // CPP1 SE combined rate (both halves)
-    emMax1: 4034.10, // CPP1 max per side (employee or employer)
-    seMax1: 8068.20, // CPP1 max SE total (both halves)
-    emR2:   0.04,    // CPP2 employee (and employer) rate
-    seR2:   0.08,    // CPP2 SE combined rate (both halves)
-    emMax2: 536.00,  // CPP2 max per side (employee or employer)
-    seMax2: 1072.00, // CPP2 max SE total (both halves)
+    ympe:      71300,
+    yampe:     81200,
+    basicEx:   3500,
+    emCPP1:    0.0595,  // CPP1 employee (and employer) rate
+    seCPP1:    0.119,   // CPP1 SE combined rate (both halves)
+    emMaxCPP1: 4034.10, // CPP1 max per side (employee or employer)
+    seMaxCPP1: 8068.20, // CPP1 max SE total (both halves)
+    emCPP2:    0.04,    // CPP2 employee (and employer) rate
+    seCPP2:    0.08,    // CPP2 SE combined rate (both halves)
+    emMaxCPP2: 396.00,  // CPP2 max per side: (81200−71300)×4% — source: CRA payroll tables
+    seMaxCPP2: 792.00,  // CPP2 max SE total (both halves)
   },
   2026: {
-    ympe:   74600,
-    yampe:  85000,
-    ex:     3500,
-    emR1:   0.0595,
-    seR1:   0.119,
-    emMax1: 4230.45,
-    seMax1: 8460.90,
-    emR2:   0.04,
-    seR2:   0.08,
-    emMax2: 556.00,
-    seMax2: 1112.00,
+    ympe:      74600,
+    yampe:     85000,
+    basicEx:   3500,
+    emCPP1:    0.0595,
+    seCPP1:    0.119,
+    emMaxCPP1: 4230.45,
+    seMaxCPP1: 8460.90,
+    emCPP2:    0.04,
+    seCPP2:    0.08,
+    emMaxCPP2: 416.00,  // CPP2 max per side: (85000−74600)×4% — source: CRA payroll tables
+    seMaxCPP2: 832.00,  // CPP2 max SE total (both halves)
   },
 };
 

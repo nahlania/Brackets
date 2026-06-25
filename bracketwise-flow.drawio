@@ -1,0 +1,452 @@
+<mxfile host="app.diagrams.net" pages="2">
+  <diagram name="BracketWise Engine Simplified" id="bw-simple">
+    <mxGraphModel dx="1044" dy="635" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1100" pageHeight="1600" background="light-dark(#FFFFFF,#E8E8E8)" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="s1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#647687;strokeColor=#314354;fontColor=#fff;fontStyle=1;fontSize=12;align=center;" value="1  .  INCOME SOURCES" vertex="1">
+          <mxGeometry height="30" width="960" x="20" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="t4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontStyle=1;fontSize=11;" value="T4 Employment Income" vertex="1">
+          <mxGeometry height="50" width="220" x="20" y="62" as="geometry" />
+        </mxCell>
+        <mxCell id="se" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontStyle=1;fontSize=11;" value="Self-Employment Net Income" vertex="1">
+          <mxGeometry height="50" width="220" x="260" y="62" as="geometry" />
+        </mxCell>
+        <mxCell id="cg" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontStyle=1;fontSize=11;" value="Capital Gains" vertex="1">
+          <mxGeometry height="50" width="220" x="500" y="62" as="geometry" />
+        </mxCell>
+        <mxCell id="other" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontStyle=1;fontSize=11;" value="Other Income" vertex="1">
+          <mxGeometry height="50" width="240" x="740" y="62" as="geometry" />
+        </mxCell>
+        <mxCell id="s2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#647687;strokeColor=#314354;fontColor=#fff;fontStyle=1;fontSize=12;align=center;" value="2  .  MANDATORY WITHHOLDINGS  (calculated before any optimization)" vertex="1">
+          <mxGeometry height="30" width="960" x="20" y="148" as="geometry" />
+        </mxCell>
+        <mxCell id="t4cpp" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;fontSize=10;" value="T4 CPP - Tier 1 + Tier 2&#xa;Pensionable earnings on T4 up to YMPE (Tier 1)&#xa;and YMPE to YAMPE band (Tier 2)&#xa;base portion: Line 30800 (NR credit)&#xa;enhanced portion: Line 22215 (income deduction)" vertex="1">
+          <mxGeometry height="100" width="300" x="20" y="190" as="geometry" />
+        </mxCell>
+        <mxCell id="ei" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=10;" value="EI Premium&#xa;min( min(T4, maxInsurable) x rate, maxPremium )&#xa;T4 employment only; SE EI excluded&#xa;Line 31200 (NR credit)" vertex="1">
+          <mxGeometry height="100" width="300" x="340" y="190" as="geometry" />
+        </mxCell>
+        <mxCell id="secpp" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;fontSize=10;" value="SE CPP - Tier 1 + Tier 2&#xa;T4 consumes YMPE / YAMPE headroom first&#xa;SE pays both employee + employer halves&#xa;50% of seCpp1: Line 22200 (income deduction)&#xa;enhanced portion: Line 22215 (income deduction)&#xa;base portion: Line 31000 (NR credit)" vertex="1">
+          <mxGeometry height="100" width="320" x="660" y="190" as="geometry" />
+        </mxCell>
+        <mxCell id="s3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#647687;strokeColor=#314354;fontColor=#fff;fontStyle=1;fontSize=12;align=center;" value="3  .  INCOME AGGREGATION" vertex="1">
+          <mxGeometry height="30" width="960" x="20" y="328" as="geometry" />
+        </mxCell>
+        <mxCell id="cginc" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=10;" value="Capital Gains Inclusion Rate&#xa;up to $250K: CG x 50%  |  above $250K: $125K + excess x 2/3" vertex="1">
+          <mxGeometry height="50" width="450" x="20" y="368" as="geometry" />
+        </mxCell>
+        <mxCell id="tgi" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontStyle=1;fontSize=11;" value="taxableGrossIncome = T4 + SE + Other + cgInclusion" vertex="1">
+          <mxGeometry height="50" width="490" x="490" y="368" as="geometry" />
+        </mxCell>
+        <mxCell id="s4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#647687;strokeColor=#314354;fontColor=#fff;fontStyle=1;fontSize=12;align=center;" value="4  .  DEDUCTIONS FROM INCOME  -  netIncome  (CRA Line 23600)" vertex="1">
+          <mxGeometry height="30" width="960" x="20" y="456" as="geometry" />
+        </mxCell>
+        <mxCell id="ni" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=10;" value="netIncome = taxableGrossIncome&#xa;   -  SE CPP employer deduction          (Line 22200)&#xa;   -  SE CPP enhanced deduction           (Line 22215)&#xa;   -  T4 CPP enhanced + Tier 2             (Line 22215)&#xa;   -  FHSA contributions (already + new)   (Line 20805)&#xa;   -  RRSP contributions                   (Line 20800)&#xa;   -  Childcare                            (Line 21400)&#xa;&#xa;Before optimization: only CPP lines apply; FHSA + RRSP = $0" vertex="1">
+          <mxGeometry height="120" width="960" x="20" y="496" as="geometry" />
+        </mxCell>
+        <mxCell id="s5" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#647687;strokeColor=#314354;fontColor=#fff;fontStyle=1;fontSize=12;align=center;" value="5  .  TAX CALCULATIONS  (applied to netIncome)" vertex="1">
+          <mxGeometry height="30" width="960" x="20" y="654" as="geometry" />
+        </mxCell>
+        <mxCell id="fedt" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=10;" value="FEDERAL TAX&#xa;rawFed = bracketedTax(netIncome, FED_BRACKETS)&#xa;&#xa;Non-refundable credits at first bracket rate (~14%):&#xa;  BPA credit  |  CPP NR credit (L30800 + L31000)&#xa;  EI credit  |  Canada Employment Amount  |  Medical&#xa;&#xa;fedTax = max(0, rawFed - credits)" vertex="1">
+          <mxGeometry height="130" width="460" x="20" y="694" as="geometry" />
+        </mxCell>
+        <mxCell id="provt" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=10;" value="PROVINCIAL TAX  (BC example)&#xa;rawProv = bracketedTax(netIncome, PROV_BRACKETS)&#xa;&#xa;Non-refundable credits at lowest prov rate (~5.6% BC):&#xa;  Prov BPA  |  CPP / EI credits&#xa;  BC Low-Income Tax Reduction (LITR):&#xa;    up to $690 credit; claws back 3.56% above $25,570&#xa;  Medical credit (at prov rate)&#xa;&#xa;adjProvTax = max(0, rawProv - credits)" vertex="1">
+          <mxGeometry height="130" width="480" x="500" y="694" as="geometry" />
+        </mxCell>
+        <mxCell id="ttax" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#647687;strokeColor=#314354;fontColor=#fff;fontStyle=1;fontSize=12;align=center;" value="totalTax  =  fedTax  +  adjProvTax" vertex="1">
+          <mxGeometry height="36" width="960" x="20" y="834" as="geometry" />
+        </mxCell>
+        <mxCell id="s6" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#9673A6;strokeColor=#6d4a87;fontColor=#fff;fontStyle=1;fontSize=12;align=center;" value="6  .  BEFORE OPTIMIZATION  -  baseline snapshot  (rrsp = $0, fhsa = $0)" vertex="1">
+          <mxGeometry height="30" width="960" x="20" y="906" as="geometry" />
+        </mxCell>
+        <mxCell id="b1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=10;" value="taxOwing&#xa;= max(0, totalTax - t4TotalTax)&#xa;April balance owing" vertex="1">
+          <mxGeometry height="70" width="220" x="20" y="946" as="geometry" />
+        </mxCell>
+        <mxCell id="b2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=10;" value="afterTaxIncome&#xa;= grossIncome - totalTax - totalCpp - EI&#xa;Take-home income" vertex="1">
+          <mxGeometry height="70" width="250" x="260" y="946" as="geometry" />
+        </mxCell>
+        <mxCell id="b3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=10;" value="avgTaxRate&#xa;= (totalTax + totalCpp + EI) / grossIncome" vertex="1">
+          <mxGeometry height="70" width="250" x="530" y="946" as="geometry" />
+        </mxCell>
+        <mxCell id="b4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=10;" value="marginalRateBefore&#xa;Probe: singlePass(+$100) - base&#xa;Chart cursor: beforePass.netIncome" vertex="1">
+          <mxGeometry height="70" width="180" x="800" y="946" as="geometry" />
+        </mxCell>
+        <mxCell id="s7" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#647687;strokeColor=#314354;fontColor=#fff;fontStyle=1;fontSize=12;align=center;" value="7  .  OPTIMIZATION CONSTRAINTS" vertex="1">
+          <mxGeometry height="30" width="960" x="20" y="1054" as="geometry" />
+        </mxCell>
+        <mxCell id="o1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" value="Available Cash / month&#xa;x 12 = annual budget" vertex="1">
+          <mxGeometry height="56" width="220" x="20" y="1094" as="geometry" />
+        </mxCell>
+        <mxCell id="o2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" value="FHSA Room&#xa;min(roomForYear - alreadyContrib,&#xa;lifetimeLimit - lifetimeUsed)" vertex="1">
+          <mxGeometry height="56" width="220" x="260" y="1094" as="geometry" />
+        </mxCell>
+        <mxCell id="o3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" value="RRSP Room&#xa;roomFromNOA - alreadyContrib&#xa;- RRSP match impact" vertex="1">
+          <mxGeometry height="56" width="220" x="500" y="1094" as="geometry" />
+        </mxCell>
+        <mxCell id="o4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" value="Optimization Floor&#xa;BC: $21,000 fixed&#xa;AB / SK: fed BPA for year&#xa;netIncome never drops below this" vertex="1">
+          <mxGeometry height="56" width="240" x="740" y="1094" as="geometry" />
+        </mxCell>
+        <mxCell id="s8" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#647687;strokeColor=#314354;fontColor=#fff;fontStyle=1;fontSize=12;align=center;" value="8  .  5-PASS CONVERGENCE LOOP  -  RRSP is self-referential: more contribution, less tax, more cash, more contribution" vertex="1">
+          <mxGeometry height="30" width="960" x="20" y="1186" as="geometry" />
+        </mxCell>
+        <mxCell id="l1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=10;" value="1. Run singlePass&#xa;with current rrsp + fhsa&#xa;Start: rrsp=0, fhsa=0" vertex="1">
+          <mxGeometry height="80" width="160" x="20" y="1230" as="geometry" />
+        </mxCell>
+        <mxCell id="l2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=10;" value="2. taxOwing&#xa;= max(0, totalTax&#xa;  - t4TotalTax)" vertex="1">
+          <mxGeometry height="80" width="170" x="200" y="1230" as="geometry" />
+        </mxCell>
+        <mxCell id="l3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=10;" value="3. Investable pool&#xa;= cash - taxOwing&#xa;  - seCpp" vertex="1">
+          <mxGeometry height="80" width="160" x="390" y="1230" as="geometry" />
+        </mxCell>
+        <mxCell id="l4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=10;" value="4. FHSA first&#xa;= min(pool, fhsaRoom)&#xa;Filled before RRSP" vertex="1">
+          <mxGeometry height="80" width="150" x="570" y="1230" as="geometry" />
+        </mxCell>
+        <mxCell id="l5" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=10;" value="5. RRSP headroom&#xa;= netIncome + prior contribs&#xa;  - new fhsa - floor" vertex="1">
+          <mxGeometry height="80" width="160" x="740" y="1230" as="geometry" />
+        </mxCell>
+        <mxCell id="l6" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#9673A6;strokeColor=#6d4a87;fontColor=#fff;fontSize=10;" value="6. RRSP amount&#xa;= min(pool - fhsa,&#xa;  rrspRoom, headroom)&#xa;feeds back to step 1" vertex="1">
+          <mxGeometry height="80" width="160" x="820" y="1230" as="geometry" />
+        </mxCell>
+        <mxCell id="loopback" edge="1" parent="1" source="l6" style="edgeStyle=orthogonalEdgeStyle;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#9673A6;fontStyle=2;fontSize=10;endArrow=block;endFill=1;" target="l1" value="passes 1 through 4: repeat with updated rrsp + fhsa">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="900" y="1360" />
+              <mxPoint x="100" y="1360" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="s9" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#9673A6;strokeColor=#6d4a87;fontColor=#fff;fontStyle=1;fontSize=12;align=center;" value="9  .  AFTER OPTIMIZATION  -  final results shown to user  (using converged fhsaContrib + rrspContrib)" vertex="1">
+          <mxGeometry height="30" width="960" x="20" y="1398" as="geometry" />
+        </mxCell>
+        <mxCell id="r1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0f4ff;strokeColor=#6C8EBF;fontStyle=1;fontSize=10;" value="fhsaContrib&#xa;rrspContrib&#xa;TFSA = min(pool - fhsa - rrsp, limit)" vertex="1">
+          <mxGeometry height="80" width="220" x="20" y="1440" as="geometry" />
+        </mxCell>
+        <mxCell id="r2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0f4ff;strokeColor=#6C8EBF;fontStyle=1;fontSize=10;" value="taxSaving&#xa;= beforePass.totalTax&#xa;  - result.totalTax" vertex="1">
+          <mxGeometry height="80" width="220" x="260" y="1440" as="geometry" />
+        </mxCell>
+        <mxCell id="r3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0f4ff;strokeColor=#6C8EBF;fontStyle=1;fontSize=10;" value="taxOwing (final)&#xa;totalLiabilities = taxOwing + seCpp&#xa;April cash needed" vertex="1">
+          <mxGeometry height="80" width="220" x="500" y="1440" as="geometry" />
+        </mxCell>
+        <mxCell id="r4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0f4ff;strokeColor=#6C8EBF;fontStyle=1;fontSize=10;" value="afterTaxIncome (optimized)&#xa;avgTaxRate&#xa;marginalRateAfter" vertex="1">
+          <mxGeometry height="80" width="240" x="740" y="1440" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="t4" style="edgeStyle=orthogonalEdgeStyle;" target="t4cpp">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="t4" style="edgeStyle=orthogonalEdgeStyle;" target="ei">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="se" style="edgeStyle=orthogonalEdgeStyle;" target="secpp">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="cg" style="edgeStyle=orthogonalEdgeStyle;" target="cginc">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="315" y="87" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="cginc" style="edgeStyle=orthogonalEdgeStyle;" target="tgi">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="t4" style="edgeStyle=orthogonalEdgeStyle;" target="tgi">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" edge="1" parent="1" source="se" style="edgeStyle=orthogonalEdgeStyle;" target="tgi">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" edge="1" parent="1" source="other" style="edgeStyle=orthogonalEdgeStyle;" target="tgi">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" edge="1" parent="1" source="tgi" style="edgeStyle=orthogonalEdgeStyle;" target="ni">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" edge="1" parent="1" source="t4cpp" style="edgeStyle=orthogonalEdgeStyle;" target="ni">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e11" edge="1" parent="1" source="secpp" style="edgeStyle=orthogonalEdgeStyle;" target="ni">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e12" edge="1" parent="1" source="ni" style="edgeStyle=orthogonalEdgeStyle;" target="fedt">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e13" edge="1" parent="1" source="ni" style="edgeStyle=orthogonalEdgeStyle;" target="provt">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e14" edge="1" parent="1" source="ei" style="edgeStyle=orthogonalEdgeStyle;" target="fedt">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e15" edge="1" parent="1" source="fedt" style="edgeStyle=orthogonalEdgeStyle;" target="ttax">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e16" edge="1" parent="1" source="provt" style="edgeStyle=orthogonalEdgeStyle;" target="ttax">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e17" edge="1" parent="1" source="ttax" style="edgeStyle=orthogonalEdgeStyle;" target="b1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e18" edge="1" parent="1" source="ttax" style="edgeStyle=orthogonalEdgeStyle;" target="b2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e19" edge="1" parent="1" source="ttax" style="edgeStyle=orthogonalEdgeStyle;" target="b3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e20" edge="1" parent="1" source="ttax" style="edgeStyle=orthogonalEdgeStyle;" target="b4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e21" edge="1" parent="1" source="b1" style="edgeStyle=orthogonalEdgeStyle;" target="l3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e22" edge="1" parent="1" source="o1" style="edgeStyle=orthogonalEdgeStyle;" target="l3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e23" edge="1" parent="1" source="o2" style="edgeStyle=orthogonalEdgeStyle;" target="l4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e24" edge="1" parent="1" source="o3" style="edgeStyle=orthogonalEdgeStyle;" target="l5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e25" edge="1" parent="1" source="o4" style="edgeStyle=orthogonalEdgeStyle;" target="l5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e26" edge="1" parent="1" source="ni" style="edgeStyle=orthogonalEdgeStyle;" target="l1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="el1" edge="1" parent="1" source="l1" style="edgeStyle=orthogonalEdgeStyle;" target="l2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="el2" edge="1" parent="1" source="l2" style="edgeStyle=orthogonalEdgeStyle;" target="l3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="el3" edge="1" parent="1" source="l3" style="edgeStyle=orthogonalEdgeStyle;" target="l4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="el4" edge="1" parent="1" source="l4" style="edgeStyle=orthogonalEdgeStyle;" target="l5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="el5" edge="1" parent="1" source="l5" style="edgeStyle=orthogonalEdgeStyle;" target="l6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e27" edge="1" parent="1" source="l6" style="edgeStyle=orthogonalEdgeStyle;strokeWidth=2;endArrow=block;endFill=1;fontSize=10;" target="r1" value="After pass 4: converged contributions">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="AtdHj1xYSc3XFKDJrk3a" name="Page-2">
+    <mxGraphModel dx="1201" dy="730" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="light-dark(#FFFFFF,#F2F2F2)" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#647687;strokeColor=#314354;fontColor=#fff;fontStyle=1;fontSize=13;align=center;" value="INCOME" vertex="1">
+          <mxGeometry height="28" width="880" x="20" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontStyle=1;fontSize=12;" value="T4 Employment" vertex="1">
+          <mxGeometry height="56" width="210" x="20" y="58" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontStyle=1;fontSize=12;" value="Self-Employment" vertex="1">
+          <mxGeometry height="56" width="210" x="240" y="58" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontStyle=1;fontSize=12;" value="Capital Gains&#xa;50% or 67% included" vertex="1">
+          <mxGeometry height="56" width="210" x="460" y="58" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-5" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontStyle=1;fontSize=12;" value="Other Income" vertex="1">
+          <mxGeometry height="56" width="220" x="680" y="58" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-6" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#647687;strokeColor=#314354;fontColor=#fff;fontStyle=1;fontSize=13;align=center;" value="MANDATORY CONTRIBUTIONS" vertex="1">
+          <mxGeometry height="28" width="880" x="20" y="134" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-7" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;fontStyle=1;fontSize=12;" value="T4 CPP&#xa;Tier 1 &amp; Tier 2" vertex="1">
+          <mxGeometry height="70" width="290" x="20" y="172" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-8" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontStyle=1;fontSize=12;" value="Employment Insurance&#xa;T4 income only" vertex="1">
+          <mxGeometry height="70" width="250" x="320" y="172" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-9" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;fontStyle=1;fontSize=12;" value="SE CPP&#xa;Tier 1 &amp; Tier 2, both sides" vertex="1">
+          <mxGeometry height="70" width="320" x="580" y="172" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-10" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#647687;strokeColor=#314354;fontColor=#fff;fontStyle=1;fontSize=13;align=center;" value="NET TAXABLE INCOME" vertex="1">
+          <mxGeometry height="28" width="880" x="20" y="262" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-11" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontStyle=1;fontSize=12;" value="netIncome&#xa;taxableGrossIncome minus CPP/EI deductions minus registered contributions (FHSA, RRSP) minus childcare" vertex="1">
+          <mxGeometry height="56" width="880" x="20" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-12" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#647687;strokeColor=#314354;fontColor=#fff;fontStyle=1;fontSize=13;align=center;" value="TAX CALCULATION" vertex="1">
+          <mxGeometry height="28" width="880" x="20" y="376" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-13" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontStyle=1;fontSize=12;" value="Federal Income Tax&#xa;Bracketed tax minus non-refundable credits" vertex="1">
+          <mxGeometry height="70" width="430" x="20" y="414" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-14" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontStyle=1;fontSize=12;" value="Provincial Income Tax&#xa;Bracketed tax minus credits incl. BC LITR" vertex="1">
+          <mxGeometry height="70" width="440" x="460" y="414" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-15" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#647687;strokeColor=#314354;fontColor=#fff;fontStyle=1;fontSize=13;align=center;" value="Total Tax  =  Federal  +  Provincial" vertex="1">
+          <mxGeometry height="30" width="880" x="20" y="494" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-16" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#9673A6;strokeColor=#6d4a87;fontColor=#fff;fontStyle=1;fontSize=13;align=center;" value="BEFORE OPTIMIZATION  -  baseline snapshot" vertex="1">
+          <mxGeometry height="28" width="880" x="20" y="544" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-17" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontStyle=1;fontSize=11;" value="Tax Owing&#xa;April balance owing" vertex="1">
+          <mxGeometry height="58" width="210" x="20" y="582" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-18" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontStyle=1;fontSize=11;" value="Take-Home Income&#xa;After all deductions" vertex="1">
+          <mxGeometry height="58" width="210" x="240" y="582" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-19" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontStyle=1;fontSize=11;" value="Effective Rate&#xa;All obligations vs gross" vertex="1">
+          <mxGeometry height="58" width="210" x="460" y="582" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-20" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontStyle=1;fontSize=11;" value="Marginal Rate&#xa;Direct probe +$100" vertex="1">
+          <mxGeometry height="58" width="220" x="680" y="582" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-21" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#647687;strokeColor=#314354;fontColor=#fff;fontStyle=1;fontSize=13;align=center;" value="OPTIMIZATION ENGINE" vertex="1">
+          <mxGeometry height="28" width="880" x="20" y="660" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-22" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=11;" value="Available Cash&#xa;Monthly budget x 12" vertex="1">
+          <mxGeometry height="52" width="210" x="20" y="698" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-23" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=11;" value="FHSA Room&#xa;Annual + lifetime limit" vertex="1">
+          <mxGeometry height="52" width="210" x="240" y="698" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-24" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=11;" value="RRSP Room&#xa;NOA limit minus employer match" vertex="1">
+          <mxGeometry height="52" width="210" x="460" y="698" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-25" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=11;" value="Tax-Free Floor&#xa;netIncome never drops below this" vertex="1">
+          <mxGeometry height="52" width="220" x="680" y="698" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-26" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=11;" value="1. Calculate Tax&#xa;singlePass(rrsp, fhsa)" vertex="1">
+          <mxGeometry height="70" width="134" x="20" y="768" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-27" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=11;" value="2. Tax Owing&#xa;Employer already withheld T4 portion" vertex="1">
+          <mxGeometry height="70" width="140" x="162" y="768" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-28" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=11;" value="3. Investable Pool&#xa;Cash minus liabilities" vertex="1">
+          <mxGeometry height="70" width="140" x="310" y="768" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-29" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=11;" value="4. Fill FHSA First&#xa;Up to room limit" vertex="1">
+          <mxGeometry height="70" width="134" x="458" y="768" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-30" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=11;" value="5. RRSP Headroom&#xa;Floor constraint applied" vertex="1">
+          <mxGeometry height="70" width="140" x="600" y="768" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-31" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#9673A6;strokeColor=#6d4a87;fontColor=#fff;fontStyle=1;fontSize=11;" value="6. RRSP Amount&#xa;Feeds back to step 1" vertex="1">
+          <mxGeometry height="70" width="152" x="748" y="768" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-32" edge="1" parent="1" source="odIpD3Tz57iz7ans9a7Q-31" style="edgeStyle=orthogonalEdgeStyle;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#9673A6;fontStyle=2;fontSize=10;endArrow=block;endFill=1;" target="odIpD3Tz57iz7ans9a7Q-26" value="passes 1 through 4: repeat with updated contributions">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="824" y="876" />
+              <mxPoint x="87" y="876" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-33" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#9673A6;strokeColor=#6d4a87;fontColor=#fff;fontStyle=1;fontSize=13;align=center;" value="OPTIMIZED RESULTS" vertex="1">
+          <mxGeometry height="28" width="880" x="20" y="896" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-34" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0f4ff;strokeColor=#6C8EBF;fontStyle=1;fontSize=11;" value="Registered Contributions&#xa;FHSA, RRSP, TFSA" vertex="1">
+          <mxGeometry height="66" width="210" x="20" y="934" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-35" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0f4ff;strokeColor=#6C8EBF;fontStyle=1;fontSize=11;" value="Tax Saving&#xa;vs. no optimization" vertex="1">
+          <mxGeometry height="66" width="210" x="240" y="934" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-36" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0f4ff;strokeColor=#6C8EBF;fontStyle=1;fontSize=11;" value="April Liabilities&#xa;Tax owing + SE CPP" vertex="1">
+          <mxGeometry height="66" width="210" x="460" y="934" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-37" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0f4ff;strokeColor=#6C8EBF;fontStyle=1;fontSize=11;" value="Income &amp; Rates&#xa;Take-home, effective, marginal" vertex="1">
+          <mxGeometry height="66" width="220" x="680" y="934" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-38" edge="1" parent="1" source="odIpD3Tz57iz7ans9a7Q-2" style="edgeStyle=orthogonalEdgeStyle;" target="odIpD3Tz57iz7ans9a7Q-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-39" edge="1" parent="1" source="odIpD3Tz57iz7ans9a7Q-2" style="edgeStyle=orthogonalEdgeStyle;" target="odIpD3Tz57iz7ans9a7Q-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-40" edge="1" parent="1" source="odIpD3Tz57iz7ans9a7Q-3" style="edgeStyle=orthogonalEdgeStyle;" target="odIpD3Tz57iz7ans9a7Q-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-41" edge="1" parent="1" source="odIpD3Tz57iz7ans9a7Q-2" style="edgeStyle=orthogonalEdgeStyle;" target="odIpD3Tz57iz7ans9a7Q-11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-42" edge="1" parent="1" source="odIpD3Tz57iz7ans9a7Q-3" style="edgeStyle=orthogonalEdgeStyle;" target="odIpD3Tz57iz7ans9a7Q-11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-43" edge="1" parent="1" source="odIpD3Tz57iz7ans9a7Q-4" style="edgeStyle=orthogonalEdgeStyle;" target="odIpD3Tz57iz7ans9a7Q-11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-44" edge="1" parent="1" source="odIpD3Tz57iz7ans9a7Q-5" style="edgeStyle=orthogonalEdgeStyle;" target="odIpD3Tz57iz7ans9a7Q-11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-45" edge="1" parent="1" source="odIpD3Tz57iz7ans9a7Q-7" style="edgeStyle=orthogonalEdgeStyle;" target="odIpD3Tz57iz7ans9a7Q-11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-46" edge="1" parent="1" source="odIpD3Tz57iz7ans9a7Q-9" style="edgeStyle=orthogonalEdgeStyle;" target="odIpD3Tz57iz7ans9a7Q-11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-47" edge="1" parent="1" source="odIpD3Tz57iz7ans9a7Q-11" style="edgeStyle=orthogonalEdgeStyle;" target="odIpD3Tz57iz7ans9a7Q-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-48" edge="1" parent="1" source="odIpD3Tz57iz7ans9a7Q-11" style="edgeStyle=orthogonalEdgeStyle;" target="odIpD3Tz57iz7ans9a7Q-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-49" edge="1" parent="1" source="odIpD3Tz57iz7ans9a7Q-8" style="edgeStyle=orthogonalEdgeStyle;" target="odIpD3Tz57iz7ans9a7Q-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-50" edge="1" parent="1" source="odIpD3Tz57iz7ans9a7Q-13" style="edgeStyle=orthogonalEdgeStyle;" target="odIpD3Tz57iz7ans9a7Q-15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-51" edge="1" parent="1" source="odIpD3Tz57iz7ans9a7Q-14" style="edgeStyle=orthogonalEdgeStyle;" target="odIpD3Tz57iz7ans9a7Q-15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-52" edge="1" parent="1" source="odIpD3Tz57iz7ans9a7Q-15" style="edgeStyle=orthogonalEdgeStyle;" target="odIpD3Tz57iz7ans9a7Q-17">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-53" edge="1" parent="1" source="odIpD3Tz57iz7ans9a7Q-15" style="edgeStyle=orthogonalEdgeStyle;" target="odIpD3Tz57iz7ans9a7Q-18">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-54" edge="1" parent="1" source="odIpD3Tz57iz7ans9a7Q-15" style="edgeStyle=orthogonalEdgeStyle;" target="odIpD3Tz57iz7ans9a7Q-19">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-55" edge="1" parent="1" source="odIpD3Tz57iz7ans9a7Q-15" style="edgeStyle=orthogonalEdgeStyle;" target="odIpD3Tz57iz7ans9a7Q-20">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-56" edge="1" parent="1" source="odIpD3Tz57iz7ans9a7Q-17" style="edgeStyle=orthogonalEdgeStyle;" target="odIpD3Tz57iz7ans9a7Q-28">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-57" edge="1" parent="1" source="odIpD3Tz57iz7ans9a7Q-22" style="edgeStyle=orthogonalEdgeStyle;" target="odIpD3Tz57iz7ans9a7Q-28">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-58" edge="1" parent="1" source="odIpD3Tz57iz7ans9a7Q-23" style="edgeStyle=orthogonalEdgeStyle;" target="odIpD3Tz57iz7ans9a7Q-29">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-59" edge="1" parent="1" source="odIpD3Tz57iz7ans9a7Q-24" style="edgeStyle=orthogonalEdgeStyle;" target="odIpD3Tz57iz7ans9a7Q-30">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-60" edge="1" parent="1" source="odIpD3Tz57iz7ans9a7Q-25" style="edgeStyle=orthogonalEdgeStyle;" target="odIpD3Tz57iz7ans9a7Q-30">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-61" edge="1" parent="1" source="odIpD3Tz57iz7ans9a7Q-11" style="edgeStyle=orthogonalEdgeStyle;" target="odIpD3Tz57iz7ans9a7Q-26">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-62" edge="1" parent="1" source="odIpD3Tz57iz7ans9a7Q-26" style="edgeStyle=orthogonalEdgeStyle;" target="odIpD3Tz57iz7ans9a7Q-27">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-63" edge="1" parent="1" source="odIpD3Tz57iz7ans9a7Q-27" style="edgeStyle=orthogonalEdgeStyle;" target="odIpD3Tz57iz7ans9a7Q-28">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-64" edge="1" parent="1" source="odIpD3Tz57iz7ans9a7Q-28" style="edgeStyle=orthogonalEdgeStyle;" target="odIpD3Tz57iz7ans9a7Q-29">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-65" edge="1" parent="1" source="odIpD3Tz57iz7ans9a7Q-29" style="edgeStyle=orthogonalEdgeStyle;" target="odIpD3Tz57iz7ans9a7Q-30">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-66" edge="1" parent="1" source="odIpD3Tz57iz7ans9a7Q-30" style="edgeStyle=orthogonalEdgeStyle;" target="odIpD3Tz57iz7ans9a7Q-31">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="odIpD3Tz57iz7ans9a7Q-67" edge="1" parent="1" source="odIpD3Tz57iz7ans9a7Q-31" style="edgeStyle=orthogonalEdgeStyle;strokeWidth=2;endArrow=block;endFill=1;fontSize=10;" target="odIpD3Tz57iz7ans9a7Q-34" value="converged">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

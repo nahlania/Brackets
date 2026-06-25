@@ -7,7 +7,7 @@
   LIMITS,
   MEDICAL_FLOOR,
   PROV_MEDICAL_FLOOR,
-  PROV_BRACKETS,
+
   PROV_LOWEST_RATE,
   TAX_FREE_FLOOR,
 } from './brackets.js';
@@ -60,44 +60,44 @@ function fedBpa(netIncome, year) {
 
 
 function calcCpp(t4Income, seNetIncome, year) {
-  const { ympe, yampe, ex, emR1, seR1, emR2, seR2, emMax1, seMax1, emMax2, seMax2 } = CPP_PARAMS[year];
-  const enhR1 = emR1 - CPP1_BASE_RATE; // 1.00% enhanced employee rate
+  const { ympe, yampe, basicEx, emCPP1, seCPP1, emCPP2, seCPP2, emMaxCPP1, seMaxCPP1, emMaxCPP2, seMaxCPP2 } = CPP_PARAMS[year];
+  const enhR1 = emCPP1 - CPP1_BASE_RATE; // 1.00% enhanced employee rate
 
   // ==========================================
   // 1. T4 SALARY INCOME CPP CALCULATIONS
   // ==========================================
   // Tier 1 Pensionable earnings capped at YMPE
-  const t4Pensionable1 = Math.max(0, Math.min(t4Income, ympe) - ex);
+  const t4Pensionable1 = Math.max(0, Math.min(t4Income, ympe) - basicEx);
   // Employee T4 CPP1 contributions deducted at source
-  const t4Cpp1 = Math.min(t4Pensionable1 * emR1, emMax1);
-  
+  const t4Cpp1 = Math.min(t4Pensionable1 * emCPP1, emMaxCPP1);
+
   // Non-refundable tax credit (Line 30800) and Enhanced deduction (Line 22215)
-  const t4CppNrtcBase = t4Cpp1 * (CPP1_BASE_RATE / emR1); 
-  const t4EnhancedDeduction = t4Cpp1 * (enhR1 / emR1);
+  const t4CppNrtcBase       = t4Cpp1 * (CPP1_BASE_RATE / emCPP1);
+  const t4EnhancedDeduction = t4Cpp1 - t4CppNrtcBase;
 
   // Tier 2 (CPP2) earnings within the YMPE to YAMPE band
   const t4Cpp2Pensionable2 = Math.max(0, Math.min(t4Income, yampe) - ympe);
-  const t4Cpp2 = Math.min(t4Cpp2Pensionable2 * emR2, emMax2);
+  const t4Cpp2 = Math.min(t4Cpp2Pensionable2 * emCPP2, emMaxCPP2);
 
 
   // ==========================================
   // 2. SELF-EMPLOYED (SE) INCOME CPP CALCULATIONS
   // ==========================================
-    // --- SE Tier 1 (Base + First Additional) ---
+  // --- SE Tier 1 (Base + First Additional) ---
   // Total allowed pensionable earnings across both income streams capped at YMPE
   const totalCombinedPensionable1 = Math.min(Math.max(0, t4Income) + Math.max(0, seNetIncome), ympe);
   // Calculate remaining SE earnings allocation available under the YMPE ceiling
   const seAllowedEarnings1 = Math.max(0, totalCombinedPensionable1 - Math.max(0, t4Income));
-  
+
   // Net contributory earnings after applying single basic exemption buffer
   // If T4 income didn't fully use the exemption, the remainder shields SE income
-  const t4UnderExemptionBonus = Math.max(0, ex - Math.min(t4Income, ex));
+  const t4UnderExemptionBonus = Math.max(0, basicEx - Math.min(t4Income, basicEx));
   const seContributoryEarnings1 = Math.max(0, seAllowedEarnings1 - t4UnderExemptionBonus);
 
   // Apply self-employed Tier 1 contribution calculations
-  const seCpp1Raw = seContributoryEarnings1 * seR1;
-  // Hard cap SE obligations against total remaining annual space 
-  const remainingSeMax1 = Math.max(0, seMax1 - (Math.min(t4Income, ympe) > ex ? (Math.min(t4Income, ympe) - ex) * seR1 : 0));
+  const seCpp1Raw = seContributoryEarnings1 * seCPP1;
+  // Hard cap SE obligations against total remaining annual space
+  const remainingSeMax1 = Math.max(0, seMaxCPP1 - (Math.min(t4Income, ympe) > basicEx ? (Math.min(t4Income, ympe) - basicEx) * seCPP1 : 0));
   const seCpp1 = Math.min(seCpp1Raw, remainingSeMax1);
 
   // --- SE Tier 2 (CPP2 Additional) ---
@@ -105,12 +105,12 @@ function calcCpp(t4Income, seNetIncome, year) {
   const totalCombinedPensionable2 = Math.min(Math.max(0, t4Income) + Math.max(0, seNetIncome), yampe);
   const totalYampeEarningsAllocated = Math.max(0, totalCombinedPensionable2 - ympe);
   const t4YampeEarningsConsumed = Math.max(0, Math.min(t4Income, yampe) - ympe);
-  
+
   // Net remaining Tier 2 space available exclusively for SE allocation
   const seAllowedEarnings2 = Math.max(0, totalYampeEarningsAllocated - t4YampeEarningsConsumed);
-  
-  const seCpp2Raw = seAllowedEarnings2 * seR2;
-  const remainingSeMax2 = Math.max(0, seMax2 - (t4YampeEarningsConsumed * seR2));
+
+  const seCpp2Raw = seAllowedEarnings2 * seCPP2;
+  const remainingSeMax2 = Math.max(0, seMaxCPP2 - (t4YampeEarningsConsumed * seCPP2));
   const seCpp2 = Math.min(seCpp2Raw, remainingSeMax2);
 
 
@@ -121,10 +121,10 @@ function calcCpp(t4Income, seNetIncome, year) {
   const seEmployerDeduction = seCpp1 * 0.5;
 
   // SE Enhanced Employee Deduction (Line 22215): 1.00% Enhanced Tier 1 + 100% of CPP2
-  const seEnhancedDeduction = (seCpp1 * (enhR1 / seR1)) + seCpp2;
+  const seEnhancedDeduction = (seCpp1 * (enhR1 / seCPP1)) + seCpp2;
 
   // SE Non-Refundable Tax Credit Base (Line 31000): 4.95% Base Tier 1
-  const seNrtcBase = seCpp1 * (CPP1_BASE_RATE / seR1);
+  const seNrtcBase = seCpp1 * (CPP1_BASE_RATE / seCPP1);
 
   return {
     t4Cpp1,
@@ -160,8 +160,8 @@ function capitalGainsInclusion(gains) {
 
 // ─── FEDERAL TAX ─────────────────────────────────────────────────────────────
 
-function calcFedTax(taxableIncome, netIncome, t4Income, cppData, eiPremium, medExp, province, year) {
-  const rawFed  = bracketedTax(taxableIncome, FED_BRACKETS[year]);
+function calcFedTax(netIncome, t4Income, cppData, eiPremium, medExp, province, year) {
+  const rawFed  = bracketedTax(netIncome, FED_BRACKETS[year]);
   const bpa     = fedBpa(netIncome, year);
 
   // CRA non-refundable credit rate = lowest marginal bracket rate.
@@ -214,41 +214,37 @@ function getFloor(province, year) {
 }
 
 // ─── COMBINED BRACKETS PLOT DATA ─────────────────────────────────────────────
-// Merges all federal + provincial bracket lower bounds into a sorted unique set.
-// For each segment, returns the combined marginal rate.
+// Samples the tax engine at $100 increments to derive the effective marginal
+// rate curve, capturing hidden brackets (BPA phase-out, BC LITR clawback)
+// that statutory bracket tables miss.
 
 function buildBracketsPlotData(province, year) {
-  const fedBrackets  = FED_BRACKETS[year];
-  const provBrackets = PROV_BRACKETS[year][province];
+  const baseInputs = {
+    year, province,
+    t4Income: 0,
+    seNetIncome: 0, otherTaxableIncome: 0, capitalGains: 0,
+    childcare: 0, medicalExpenses: 0,
+    rrspRoomFromNoa: 0, rrspAlreadyContributed: 0, rrspMatchPct: 0,
+    fhsaAlreadyThisYear: 0, fhsaLifetimeUsed: 0,
+  };
 
-  const points = new Set([
-    ...fedBrackets.map(b => b.lo),
-    ...provBrackets.map(b => b.lo),
-  ]);
-  const sorted = [...points].sort((a, b) => a - b);
+  const result = [];
+  let currentRate = null;
+  let prevTax = 0;
 
-  return sorted.map((lo, i) => {
-    const testIncome = lo + 1;
+  for (let income = 0; income <= 350000; income += 100) {
+    const nextTax = singlePass({ ...baseInputs, t4Income: income + 100 }, 0, 0).totalTax;
+    const rate    = Math.round(((nextTax - prevTax) / 100) * 100 * 100) / 100;
 
-    // Marginal fed rate at this income
-    let fedRate = fedBrackets[0].r;
-    for (let j = fedBrackets.length - 1; j >= 0; j--) {
-      if (testIncome > fedBrackets[j].lo) { fedRate = fedBrackets[j].r; break; }
+    if (rate !== currentRate) {
+      result.push({ income, combinedRate: rate });
+      currentRate = rate;
     }
 
-    // Marginal prov rate at this income
-    let provRate = provBrackets[0].r;
-    for (let j = provBrackets.length - 1; j >= 0; j--) {
-      if (testIncome > provBrackets[j].lo) { provRate = provBrackets[j].r; break; }
-    }
+    prevTax = nextTax;
+  }
 
-    return {
-      income: lo,
-      fedRate,
-      provRate,
-      combinedRate: fedRate + provRate,
-    };
-  });
+  return result;
 }
 
 // ─── SINGLE FULL-CALCULATION PASS ────────────────────────────────────────────
@@ -267,7 +263,7 @@ function singlePass(inputs, rrspContrib, fhsaContrib) {
   // ── Net income deductions ────────────────────────────────────────────────
   const cgInclusion = capitalGainsInclusion(capitalGains);
   // Taxable-basis income: capital gains counted at their CRA inclusion rate
-  // (50% / 2/3). This feeds netIncome/taxableIncome for bracket calculations.
+  // (50% / 2/3). This feeds netIncome for bracket calculations.
   const taxableGrossIncome = t4Income + seNetIncome + otherTaxableIncome + cgInclusion;
   // Economic gross income: 100% of capital gains, since the untaxed portion
   // is still cash the taxpayer receives. Used for display, after-tax income,
@@ -291,18 +287,15 @@ function singlePass(inputs, rrspContrib, fhsaContrib) {
       - childcare,
   );
 
-  // Taxable income = net income (no further deductions in scope)
-  const taxableIncome = netIncome;
-
   // ── Federal tax ──────────────────────────────────────────────────────────
   const ei     = calcEI(t4Income, year);
   const fedTax = calcFedTax(
-    taxableIncome, netIncome, t4Income, cpp, ei, medicalExpenses, province, year,
+    netIncome, t4Income, cpp, ei, medicalExpenses, province, year,
   );
 
   // ── Provincial tax ───────────────────────────────────────────────────────
   const provCppNrtcBase = cpp.t4CppNrtcBase + cpp.seNrtcBase;
-  const { provTax, isInClawbackZone } = calcProv(taxableIncome, netIncome, province, year, provCppNrtcBase, ei);
+  const { provTax, isInClawbackZone } = calcProv(netIncome, province, year, provCppNrtcBase, ei);
 
   // ── Provincial NR credit for medical (applied to prov tax externally) ───
   const medFloor    = Math.min(netIncome * 0.03, PROV_MEDICAL_FLOOR[year][province]);
@@ -314,7 +307,6 @@ function singlePass(inputs, rrspContrib, fhsaContrib) {
 
   return {
     netIncome,
-    taxableIncome,
     fedTax,
     provTax: adjProvTax,
     totalTax,
@@ -411,8 +403,8 @@ export function calculateTax(inputs) {
   const taxOwing        = Math.max(0, result.totalTax - t4TotalTax);
   const totalLiabilities = taxOwing + seCpp;
   const investablePool  = Math.max(0, availableCash - totalLiabilities);
-  const tfsa            = Math.max(0, investablePool - fhsaContrib - rrspContrib);
   const tfsaAnnualLimit = LIMITS[year].tfsaAnnual;
+  const tfsa            = Math.min(Math.max(0, investablePool - fhsaContrib - rrspContrib), tfsaAnnualLimit);
 
   // ── Derived metrics ───────────────────────────────────────────────────────
   const afterTaxIncome = result.grossIncome - result.totalTax - result.totalCpp - ei;
@@ -426,8 +418,15 @@ export function calculateTax(inputs) {
 
   // ── Marginal rates before / after optimization ────────────────────────────
   const combinedBracketsPlotData = buildBracketsPlotData(province, year);
-  const marginalRateBefore = getMarginalRate(beforePass.netIncome,  combinedBracketsPlotData);
-  const marginalRateAfter  = getMarginalRate(result.netIncome,      combinedBracketsPlotData);
+
+  // Direct engine probe: add $100 of other income to capture the true effective
+  // marginal rate at the user's actual income mix. Avoids the gross/net mismatch
+  // that arises when looking up net income in the gross-indexed chart.
+  const probeInputs    = { ...inputs, otherTaxableIncome: (inputs.otherTaxableIncome ?? 0) + 100 };
+  const probeBefore    = singlePass(probeInputs, 0, 0);
+  const probeAfter     = singlePass(probeInputs, rrspContrib, fhsaContrib);
+  const marginalRateBefore = Math.round((probeBefore.totalTax - beforePass.totalTax) * 100) / 100;
+  const marginalRateAfter  = Math.round((probeAfter.totalTax  - result.totalTax)      * 100) / 100;
 
   // ── Flags ─────────────────────────────────────────────────────────────────
   const isCashDeficit          = availableCash < totalLiabilities;
@@ -438,7 +437,6 @@ export function calculateTax(inputs) {
     // Income
     grossIncome:     result.grossIncome,
     netIncome:       result.netIncome,
-    taxableIncome:   result.taxableIncome,
     afterTaxIncome,
 
     // Tax
@@ -480,5 +478,7 @@ export function calculateTax(inputs) {
     combinedBracketsPlotData,
     incomeBeforeContributions: beforePass.netIncome,
     incomeAfterContributions:  result.netIncome,
+    beforeFedTax:  beforePass.fedTax,
+    beforeProvTax: beforePass.provTax,
   };
 }

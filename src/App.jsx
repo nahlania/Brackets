@@ -123,7 +123,7 @@ function Chip({ label, active, onClick, radio = false }) {
           : 'bg-white text-slate-500 border-slate-200 hover:border-brand-300 hover:text-brand-600'
       }`}
     >
-      {(active || !radio) && <span className="text-[10px] font-bold leading-none">{active ? '✓' : '+'}</span>}
+      {(active || !radio) && <span className="text-sm font-bold leading-none">{active ? '✓' : '+'}</span>}
       {label}
     </button>
   );
@@ -131,10 +131,10 @@ function Chip({ label, active, onClick, radio = false }) {
 
 // ─── SECTION CARD ─────────────────────────────────────────────────────────────
 
-function SectionCard({ title, children }) {
+function SectionCard({ title, children, className = '' }) {
   return (
-    <div className="bg-white rounded-2xl border border-slate-200/60 p-[0.833rem] shadow-sm">
-      <h3 className="text-sm font-bold uppercase tracking-widest text-brand-700 mb-4">{title}</h3>
+    <div className={`bg-white rounded-2xl border border-slate-200/60 p-[0.833rem] shadow-sm ${className}`}>
+      <h3 className="text-sm font-bold uppercase tracking-widest text-brand-700 mb-3">{title}</h3>
       {children}
     </div>
   );
@@ -173,7 +173,7 @@ function AlertCard({ variant, message }) {
     slate:   'bg-slate-100 border-slate-300 text-slate-700',
   };
   return (
-    <div className={`rounded-xl border px-4 py-3 text-sm leading-relaxed ${styles[variant]}`}>
+    <div className={`rounded-xl border px-2.5 py-2.5 text-xs leading-normal ${styles[variant]}`}>
       {message}
     </div>
   );
@@ -193,7 +193,7 @@ function StepNote({ variant, inline, children }) {
       warning: 'text-warning-700',
     };
     return (
-      <div className={`text-xs leading-relaxed ${textStyles[variant]}`}>
+      <div className={`text-xs leading-normal ${textStyles[variant]}`}>
         <span className="font-bold mr-1.5">{icons[variant]}</span>
         {children}
       </div>
@@ -224,14 +224,17 @@ function StepBadge({ n }) {
 
 // ─── STAT PILL ────────────────────────────────────────────────────────────────
 
-function StatPill({ label, value, accent, tooltip }) {
+function StatPill({ label, value, accent, tooltip, note, noteAccent }) {
   return (
-    <div className="flex flex-col gap-1 p-3 rounded-xl bg-slate-50 border border-slate-200/70">
-      <span className="flex items-center gap-1 text-xs text-slate-500 leading-tight">
+    <div className="flex flex-col gap-1 p-2.5 rounded-xl bg-slate-50 border border-slate-200/70">
+      <span className="flex items-center gap-1 text-sm font-semibold text-slate-500 leading-tight">
         {label}
         {tooltip && <InfoTooltip text={tooltip} />}
       </span>
-      <span className={`text-base font-bold ${accent ? 'text-brand-600' : 'text-slate-900'}`}>{value}</span>
+      <div className="flex items-baseline justify-between flex-wrap gap-1">
+        <span className={`text-base font-bold ${accent ? 'text-brand-600' : 'text-slate-900'}`}>{value}</span>
+        {note && <span className={`text-xs font-semibold ${noteAccent ? 'text-brand-600' : 'text-slate-500'}`}>{note}</span>}
+      </div>
     </div>
   );
 }
@@ -367,7 +370,8 @@ function EmptyState() {
 
       {/* Skeleton: Income & Liabilities */}
       <SectionCard title="Income & Liabilities After Optimization">
-        <div className="grid grid-cols-3 gap-3 mb-4">
+        {/* Row 1 — 3 stat pills */}
+        <div className="grid grid-cols-3 gap-3 mb-3">
           {[0, 1, 2].map(i => (
             <div key={i} className="p-3 rounded-xl bg-slate-50 border border-slate-200/70 flex flex-col gap-2">
               <div className={`${skRow} w-16`} />
@@ -375,17 +379,18 @@ function EmptyState() {
             </div>
           ))}
         </div>
-        <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/60 flex flex-col gap-2.5">
-          {[0, 1, 2, 3].map(i => (
-            <div key={i} className="flex justify-between items-center">
-              <div className={`${skRow} w-28`} />
-              <div className={`${skRow} w-14`} />
+        {/* Row 2 — 2 stat pills (Year-End Owing + Tax Saving) */}
+        <div className="grid grid-cols-2 gap-3">
+          {[0, 1].map(i => (
+            <div key={i} className="p-3 rounded-xl bg-slate-50 border border-slate-200/70 flex flex-col gap-2">
+              <div className={`${skRow} w-24`} />
+              <div className={`${skBlock} w-16`} />
             </div>
           ))}
-          <div className="border-t border-slate-200 pt-2 flex justify-between items-center">
-            <div className="h-4 w-32 rounded bg-slate-200 animate-pulse" />
-            <div className="h-5 w-16 rounded bg-slate-200 animate-pulse" />
-          </div>
+        </div>
+        {/* See breakdown toggle */}
+        <div className="mt-2 flex justify-end">
+          <div className={`${skRow} w-24`} />
         </div>
       </SectionCard>
 
@@ -393,7 +398,7 @@ function EmptyState() {
       <SectionCard title="Combined Marginal Tax Rate">
         <div className="flex gap-3 items-stretch">
           <div className="flex flex-col gap-2 shrink-0 w-32">
-            {[0, 1, 2].map(i => (
+            {[0, 1].map(i => (
               <div key={i} className="flex-1 p-2 rounded-xl bg-slate-50 border border-slate-200/70 flex flex-col items-center justify-center gap-2">
                 <div className={`${skRow} w-16`} />
                 <div className={`${skBlock} w-10`} />
@@ -430,7 +435,7 @@ function Dropdown({ value, onChange, options }) {
 
 // ─── MARGINAL RATE CHART ──────────────────────────────────────────────────────
 
-function MarginalRateChart({ plotData, incomeBefore, incomeAfter }) {
+function MarginalRateChart({ plotData, incomeBefore, incomeAfter, marginalRateBefore, marginalRateAfter }) {
   const [hover, setHover] = useState(null); // { income, rate, label }
 
   if (!plotData || plotData.length === 0) return null;
@@ -445,7 +450,7 @@ function MarginalRateChart({ plotData, incomeBefore, incomeAfter }) {
     (incomeBefore ?? 0) * 1.15,
     300000,
   );
-  const maxRate = Math.max(...plotData.map(d => d.combinedRate), 40) + 6;
+  const maxRate = Math.max(...plotData.map(d => d.combinedRate), 40) + 0;
 
   const xS = (v) => PAD.left + (v / maxIncome) * cW;
   const yS = (v) => PAD.top + cH - (v / maxRate) * cH;
@@ -489,15 +494,18 @@ function MarginalRateChart({ plotData, incomeBefore, incomeAfter }) {
     income = Math.max(0, Math.min(maxIncome, income));
 
     let label = null;
+    let rate = rateAtIncome(income);
     if ((incomeBefore ?? 0) > 0 && Math.abs(xBefore - px) < SNAP_PX) {
       income = incomeBefore;
       label = 'Before';
+      rate = marginalRateBefore ?? rateAtIncome(income);
     } else if ((incomeAfter ?? 0) > 0 && Math.abs(xAfter - px) < SNAP_PX) {
       income = incomeAfter;
       label = 'After';
+      rate = marginalRateAfter ?? rateAtIncome(income);
     }
 
-    setHover({ income, rate: rateAtIncome(income), label });
+    setHover({ income, rate, label });
   };
   const handleMouseLeave = () => setHover(null);
 
@@ -552,8 +560,8 @@ function MarginalRateChart({ plotData, incomeBefore, incomeAfter }) {
       ))}
 
       {/* Axis titles */}
-      <text x={W / 2} y={PAD.top + cH + 40} textAnchor="middle" fontSize="12" fill="#94a3b8">Annual Income</text>
-      <text x={12} y={H / 2 + 4} textAnchor="middle" fontSize="12" fill="#94a3b8" transform={`rotate(-90, 12, ${H / 2})`}>Marginal Rate</text>
+      <text x={W / 2} y={PAD.top + cH + 40} textAnchor="middle" fontSize="14" fill="#94a3b8">Annual Income</text>
+      <text x={12} y={H / 2 + 4} textAnchor="middle" fontSize="14" fill="#94a3b8" transform={`rotate(-90, 12, ${H / 2})`}>Marginal Rate</text>
 
       {/* Hover capture surface */}
       <rect
@@ -568,12 +576,16 @@ function MarginalRateChart({ plotData, incomeBefore, incomeAfter }) {
       {hover && (() => {
         const hx = xS(hover.income);
         const hy = yS(hover.rate);
-        const lines = [
-          hover.label
-            ? `${hover.label}: $${Math.round(hover.income).toLocaleString('en-CA')}`
-            : `$${Math.round(hover.income).toLocaleString('en-CA')}`,
-          `${hover.rate.toFixed(1)}% marginal`,
-        ];
+        const lines = hover.label
+          ? [
+              hover.label === 'Before' ? 'Before optimization' : 'After optimization',
+              `Taxable income: $${Math.round(hover.income).toLocaleString('en-CA')}`,
+              `${hover.rate.toFixed(1)}% marginal`,
+            ]
+          : [
+              `$${Math.round(hover.income).toLocaleString('en-CA')}`,
+              `${hover.rate.toFixed(1)}% marginal`,
+            ];
         const boxW = 155;
         const boxH = lines.length * 18 + 14;
         let bx = hx + 12;
@@ -639,7 +651,8 @@ export default function App() {
   const [fhsaRoomForYear,        setFhsaRoomForYear]      = useState(0);
 
   // Toast notification (e.g., for input validation messages)
-  const [toast, setToast] = useState(null);
+  const [toast, setToast]               = useState(null);
+  const [breakdownOpen, setBreakdownOpen] = useState(false);
   const fhsaRoomInputRef = useRef(null);
   const fhsaLifetimeInputRef = useRef(null);
   const rrspRoomInputRef = useRef(null);
@@ -780,8 +793,8 @@ export default function App() {
   };
 
   const otherIncomeChips = [
-    { key: 'capGains',     label: 'Realized Capital Gains', active: capGainsActive,     toggle: () => { const next = !capGainsActive;     setCapGainsActive(next);     if (next) focusInput(capGainsInputRef);     } },
-    { key: 'otherTaxable', label: 'Other Taxable Income',   active: otherTaxableActive, toggle: () => { const next = !otherTaxableActive; setOtherTaxableActive(next); if (next) focusInput(otherTaxableInputRef); } },
+    { key: 'capGains',     label: 'Realized Capital Gains', active: capGainsActive,     toggle: () => { const next = !capGainsActive;     setCapGainsActive(next);     if (next) focusInput(capGainsInputRef); else setCapitalGains(0);     } },
+    { key: 'otherTaxable', label: 'Other Taxable Income',   active: otherTaxableActive, toggle: () => { const next = !otherTaxableActive; setOtherTaxableActive(next); if (next) focusInput(otherTaxableInputRef); else setOtherTaxableIncome(0); } },
   ];
 
   const deductionChips = [
@@ -797,7 +810,7 @@ export default function App() {
 
       {/* ── HEADER ──────────────────────────────────────────────────────────── */}
       <header className="shrink-0 bg-slate-900 border-b border-slate-700/70 shadow-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
           <div className="flex items-center gap-4 shrink-0">
             <img src="/BracketWise-Logo-Vertical-Light.svg"   alt="BracketWise" className="block lg:hidden" style={{ height: '60px', aspectRatio: '784/456' }} />
             <img src="/BracketWise-Logo-Horizontal-Light.svg" alt="BracketWise" className="hidden lg:block" style={{ height: '48px', aspectRatio: '3081/923' }} />
@@ -829,16 +842,19 @@ export default function App() {
         ].map(([level, hex]) => (
           <div key={level} className="flex flex-col items-center gap-1 flex-1">
             <div className="w-full h-10 rounded-lg shadow-sm" style={{ background: `var(--color-brand-${level})` }} />
-            <span className="text-[10px] font-semibold text-slate-600">{level}</span>
+            <span className="text-xs font-semibold text-slate-600">{level}</span>
             <span className="text-[9px] text-slate-400 font-mono">{hex}</span>
           </div>
         ))}
       </div> */}
 
-      <main className="custom-scrollbar flex-1 min-h-0 max-w-7xl mx-auto px-6 py-8 grid grid-cols-1 lg:grid-cols-2 gap-5 w-full overflow-y-auto lg:overflow-hidden">
+      {/* ── top gradient ──────────────────────────────────────────── */}
+      <div className="relative flex-1 min-h-0">
+      <div className="pointer-events-none absolute top-4 inset-x-0 h-4 z-10" style={{ background: 'linear-gradient(to top, transparent, #0f172a)' }} />
+      <main className="custom-scrollbar h-full max-w-7xl mx-auto px-6 pb-4 pt-4 grid grid-cols-1 lg:grid-cols-2 gap-5 w-full overflow-y-auto lg:overflow-hidden">
 
         {/* ══ LEFT COLUMN — PROFILE COCKPIT ════════════════════════════════ */}
-        <div className="custom-scrollbar flex flex-col gap-1.5 lg:h-full lg:overflow-y-auto lg:pr-1">
+        <div className="custom-scrollbar flex flex-col gap-1.5 lg:h-full lg:overflow-y-auto lg:pr-1 py-4">
 
         {/* § Filing Details */}
         <SectionCard title="Filing Details">
@@ -884,8 +900,8 @@ export default function App() {
           </div>
         </SectionCard>
 
-        {/* § Self-Employment */}
-        <SectionCard title="Projected Self-Employment Income">
+        {/* § Self-Employment + Other Income */}
+        <SectionCard title="Self-Employment & Other Income">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <StepperInput
               label="SE Gross Revenue"
@@ -914,10 +930,9 @@ export default function App() {
               <AlertCard variant="crimson" message={ALERTS.gstRegistration} />
             </div>
           </div>
-        </SectionCard>
 
-        {/* § Other Income — chips */}
-        <SectionCard title="Other Income">
+          <hr className="border-slate-200 my-4" />
+
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div className="flex flex-col gap-3">
               <Chip label="Realized Capital Gains" active={capGainsActive} onClick={otherIncomeChips[0].toggle} />
@@ -981,12 +996,12 @@ export default function App() {
           <SectionCard title="First Home Savings Account">
             <div className="flex flex-col gap-5">
               <StepperInput
-                label="Lifetime FHSA Contributions"
-                value={fhsaLifetimeUsed}
-                onChange={handleFhsaLifetimeChange}
-                max={40000}
-                tooltip={TOOLTIPS.fhsaLifetimeUsed}
-                inputRef={fhsaLifetimeInputRef}
+                label="FHSA Participation Room"
+                value={fhsaRoomForYear}
+                onChange={handleFhsaRoomChange}
+                max={16000}
+                tooltip={TOOLTIPS.fhsaRoomForYear}
+                inputRef={fhsaRoomInputRef}
               />
               <StepperInput
                 label="FHSA Contributed This Year"
@@ -996,18 +1011,31 @@ export default function App() {
                 tooltip={TOOLTIPS.fhsaAlreadyContrib}
               />             
               <StepperInput
-                label="FHSA Participation Room"
-                value={fhsaRoomForYear}
-                onChange={handleFhsaRoomChange}
-                max={16000}
-                tooltip={TOOLTIPS.fhsaRoomForYear}
-                inputRef={fhsaRoomInputRef}
+                label="Lifetime FHSA Contributions"
+                value={fhsaLifetimeUsed}
+                onChange={handleFhsaLifetimeChange}
+                max={40000}
+                tooltip={TOOLTIPS.fhsaLifetimeUsed}
+                inputRef={fhsaLifetimeInputRef}
               />
             </div>
           </SectionCard>
 
           <SectionCard title="Retirement Savings Plan">
             <div className="flex flex-col gap-5">
+              <StepperInput
+                label="RRSP Contribution Room"
+                value={rrspRoomFromNoa}
+                onChange={handleRrspRoomChange}
+                inputRef={rrspRoomInputRef}
+                tooltip={TOOLTIPS.rrspRoom}
+              />
+              <StepperInput
+                label="RRSP Contributed This Year"
+                value={rrspAlreadyContributed}
+                onChange={setRrspAlreadyContrib}
+                tooltip={TOOLTIPS.rrspAlreadyContrib}
+              />              
               <StepperInput
                 label="Employer RRSP Match"
                 value={rrspMatchPct}
@@ -1019,21 +1047,6 @@ export default function App() {
                 suffix="%"
                 tooltip={TOOLTIPS.rrspMatchPct}
               />
-              <StepperInput
-                label="RRSP Contributed This Year"
-                value={rrspAlreadyContributed}
-                onChange={setRrspAlreadyContrib}
-                tooltip={TOOLTIPS.rrspAlreadyContrib}
-              />
-              <StepperInput
-                label="RRSP Contribution Room"
-                value={rrspRoomFromNoa}
-                onChange={handleRrspRoomChange}
-                inputRef={rrspRoomInputRef}
-                tooltip={TOOLTIPS.rrspRoom}
-              />
-              
-
             </div>
           </SectionCard>
         </div>
@@ -1075,19 +1088,19 @@ export default function App() {
 
         {/* ══ RIGHT COLUMN — RESULTS THEATER ═══════════════════════════════ */}
         <div
-          className="custom-scrollbar flex flex-col gap-1.5 lg:h-full lg:overflow-y-auto lg:pr-1"
+          className="custom-scrollbar flex flex-col gap-1.5 lg:h-full lg:overflow-y-auto lg:pr-1 py-4"
           aria-live="polite"
         >
 
-        <div className="grid">
+        <div className="grid flex-1 min-h-0">
 
         <FadeSwitch show={!hasIncome} className="[grid-area:1/1] w-full">
           {() => <EmptyState />}
         </FadeSwitch>
 
-        <FadeSwitch show={hasIncome && !!result} className="[grid-area:1/1] w-full">
+        <FadeSwitch show={hasIncome && !!result} className="[grid-area:1/1] w-full h-full">
           {() => result && (
-          <div className="flex flex-col gap-1.5">
+          <div className="flex flex-col gap-1.5 h-full">
             {/* State Alerts */}
             {(result.isInClawbackZone || result.isBpaWasted) && (
               <div className="flex flex-col gap-3">
@@ -1101,8 +1114,8 @@ export default function App() {
             )}
 
             {/* Save & Optimize Your Tax */}
-            <SectionCard title="Save & Optimize Your Tax">
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <SectionCard title="Save & Optimize Your Tax" className="flex-1 flex flex-col">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 flex-1">
                 {(() => {
                   const s1 = step1Note(result.totalLiabilities, availableCash);
                   return (
@@ -1111,8 +1124,8 @@ export default function App() {
                         <StepBadge n={1} />
                         <p className="text-sm font-semibold text-slate-800">Save for Owings</p>
                       </div>
-                      <div className="flex-1 p-3 rounded-xl bg-brand-50 border border-brand-200/60 flex flex-col gap-1.5">
-                        <p className="text-lg font-bold text-slate-900">${fmt(monthlyLiabilities)}<span className="text-xs font-normal text-slate-500 ml-1">/ month</span></p>
+                      <div className="flex-1 p-2.5 rounded-xl bg-brand-50 border border-brand-200/60 flex flex-col gap-1.5">
+                        <p className="text-base font-bold text-slate-900">${fmt(monthlyLiabilities)}<span className="text-xs font-normal text-slate-500 ml-1">/ month</span></p>
                         <div className="flex justify-between text-xs border-t border-brand-200/60 pt-1.5 font-bold text-brand-900">
                           <span>Total Year-End Owing</span>
                           <span>${fmt(result.totalLiabilities)}</span>
@@ -1132,8 +1145,8 @@ export default function App() {
                         <StepBadge n={2} />
                         <p className="text-sm font-semibold text-slate-800">Contribute to FHSA</p>
                       </div>
-                      <div className="flex-1 p-3 rounded-xl bg-brand-50 border border-brand-200/60 flex flex-col gap-1.5">
-                        <p className="text-lg font-bold text-slate-900">${fmt(monthlyFhsa)}<span className="text-xs font-normal text-slate-500 ml-1">/ month</span></p>
+                      <div className="flex-1 p-2.5 rounded-xl bg-brand-50 border border-brand-200/60 flex flex-col gap-1.5">
+                        <p className="text-base font-bold text-slate-900">${fmt(monthlyFhsa)}<span className="text-xs font-normal text-slate-500 ml-1">/ month</span></p>
                         <div className="flex justify-between text-xs text-slate-500 border-t border-brand-200/60 pt-1.5">
                           <span>Already Contributed</span>
                           <span className="font-semibold text-slate-700">${fmt(fhsaAlreadyThisYear)}</span>
@@ -1159,8 +1172,8 @@ export default function App() {
                         <StepBadge n={3} />
                         <p className="text-sm font-semibold text-slate-800">Contribute to RRSP</p>
                       </div>
-                      <div className="flex-1 p-3 rounded-xl bg-brand-50 border border-brand-200/60 flex flex-col gap-1.5">
-                        <p className="text-lg font-bold text-slate-900">${fmt(monthlyRrsp)}<span className="text-xs font-normal text-slate-500 ml-1">/ month</span></p>
+                      <div className="flex-1 p-2.5 rounded-xl bg-brand-50 border border-brand-200/60 flex flex-col gap-1.5">
+                        <p className="text-base font-bold text-slate-900">${fmt(monthlyRrsp)}<span className="text-xs font-normal text-slate-500 ml-1">/ month</span></p>
                         <div className="flex justify-between items-start gap-2 text-xs text-slate-500 border-t border-brand-200/60 pt-1.5">
                           <span className="leading-tight">Already Contributed &amp; Employer Match</span>
                           <span className="font-semibold text-slate-700 shrink-0">${fmt(alreadyAndMatch)}</span>
@@ -1179,8 +1192,8 @@ export default function App() {
                   if (!tfsa) return null;
                   return (
                     <div className="sm:col-span-3">
-                      <div className="p-3 rounded-xl bg-brand-50 border border-brand-200/60 flex items-center gap-6">
-                        <p className="text-lg font-bold text-slate-900 shrink-0">${fmt(monthlyTfsa)}<span className="text-xs font-normal text-slate-500 ml-1">/ month</span></p>
+                      <div className="p-2.5 rounded-xl bg-brand-50 border border-brand-200/60 flex items-center gap-6">
+                        <p className="text-base font-bold text-slate-900 shrink-0">${fmt(monthlyTfsa)}<span className="text-xs font-normal text-slate-500 ml-1">/ month</span></p>
                         <StepNote variant={tfsa.variant} inline>{tfsa.text}</StepNote>
                       </div>
                     </div>
@@ -1191,74 +1204,102 @@ export default function App() {
 
             {/* Income & Liabilities After Optimization */}
             <SectionCard title="Income & Liabilities After Optimization">
-              <div className="grid grid-cols-3 gap-3 mb-4">
-                <StatPill label="Gross Income"     value={`$${fmt(result.grossIncome)}`}       tooltip={TOOLTIPS.grossIncome} />
-                <StatPill label="After-Tax Income" value={`$${fmt(result.afterTaxIncome)}`}    tooltip={TOOLTIPS.afterTaxIncome} />
-                <StatPill label="Average Rate"     value={fmtPct(result.avgTaxRate)}           tooltip={TOOLTIPS.avgTaxRate} />
+              <div className="grid grid-cols-3 gap-2 mb-2">
+                <StatPill label="Gross Income"     value={`$${fmt(result.grossIncome)}`}    tooltip={TOOLTIPS.grossIncome} />
+                <StatPill label="After-Tax Income" value={`$${fmt(result.afterTaxIncome)}`} tooltip={TOOLTIPS.afterTaxIncome} />
+                <StatPill label="Average Rate"     value={fmtPct(result.avgTaxRate)}        tooltip={TOOLTIPS.avgTaxRate} />
               </div>
-              <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/60 text-xs space-y-1.5">
-                <div className="flex justify-between text-slate-500">
-                  <span className="flex items-center gap-1">Federal Tax <InfoTooltip text={TOOLTIPS.fedTax} /></span>
-                  <span className="font-semibold text-slate-800">${fmt(result.fedTax)}</span>
-                </div>
-                <div className="flex justify-between text-slate-500">
-                  <span className="flex items-center gap-1">Provincial Tax ({province}) <InfoTooltip text={TOOLTIPS.provTax} /></span>
-                  <span className="font-semibold text-slate-800">${fmt(result.provTax)}</span>
-                </div>
-                {(result.totalCpp + result.ei) > 0 && (
-                  <div className="flex justify-between text-slate-500">
-                    <span className="flex items-center gap-1">CPP &amp; EI <InfoTooltip text={TOOLTIPS.seCpp} /></span>
-                    <span className="font-semibold text-slate-800">${fmt(result.totalCpp + result.ei)}</span>
-                  </div>
-                )}
-                <div className="flex justify-between border-t border-slate-200 pt-1.5 text-slate-600">
-                  <span className="flex items-center gap-1">Total Liabilities <InfoTooltip text={TOOLTIPS.totalLiabilities} /></span>
-                  <span className="font-semibold">${fmt(result.totalTax + result.totalCpp + result.ei)}</span>
-                </div>
-                {(() => {
-                  const grossLiabilities = result.totalTax + result.totalCpp + result.ei;
-                  const totalWithheld = result.t4TotalTax + result.t4Cpp + result.ei;
-                  const withheldApplied = Math.min(totalWithheld, grossLiabilities);
-                  const estimatedRefund = Math.max(0, totalWithheld - grossLiabilities);
-                  return (
-                    <>
-                      {totalWithheld > 0 && (
-                        <div className="flex justify-between text-slate-500">
-                          <span className="flex items-center gap-1">Est. Withheld at Source <InfoTooltip text={TOOLTIPS.withheldAtSource} /></span>
-                          <span className="font-semibold text-slate-600">−${fmt(withheldApplied)}</span>
+              {(() => {
+                const grossLiabilities = result.totalTax + result.totalCpp + result.ei;
+                const totalWithheld    = result.t4TotalTax + result.t4Cpp + result.ei;
+                const estimatedRefund  = Math.max(0, totalWithheld - grossLiabilities);
+                const cppAndEi         = result.totalCpp + result.ei;
+                const beforeGrossLiab  = result.beforeFedTax + result.beforeProvTax + cppAndEi;
+
+                const tableRows = [
+                  { label: 'Federal Tax',                  tip: TOOLTIPS.fedTax,           after: result.fedTax,    before: result.beforeFedTax,  prefix: ''  },
+                  { label: `Provincial Tax (${province})`, tip: TOOLTIPS.provTax,          after: result.provTax,   before: result.beforeProvTax, prefix: ''  },
+                  ...(cppAndEi > 0 ? [
+                    { label: 'CPP & EI',                   tip: TOOLTIPS.seCpp,            after: cppAndEi,         before: null,                 prefix: ''  },
+                  ] : []),
+                  { label: 'Total Liabilities',            tip: TOOLTIPS.totalLiabilities, after: grossLiabilities, before: beforeGrossLiab,      prefix: '', bold: true },
+                  ...(totalWithheld > 0 ? [
+                    { label: 'Est. Withheld at Source',    tip: TOOLTIPS.withheldAtSource, after: totalWithheld,    before: null,                 prefix: '−' },
+                  ] : []),
+                ];
+
+                return (
+                  <>
+                    {/* Primary — always visible */}
+                    <div className="grid grid-cols-2 gap-2">
+
+                      <StatPill
+                        label="Tax Saving"
+                        value={`$${fmt(result.taxSaving)}`}
+                        accent={result.taxSaving > 0}
+                        tooltip={TOOLTIPS.taxSaving}
+                      />
+                      <StatPill
+                        label="Total Year-End Owing"
+                        value={`$${fmt(result.totalLiabilities)}`}
+                        tooltip={TOOLTIPS.yearEndOwing}
+                        note={estimatedRefund > 0 ? `+$${fmt(estimatedRefund)} refund expected` : undefined}
+                        noteAccent={estimatedRefund > 0}
+                      />
+                    </div>
+
+                    {/* Toggle */}
+                    <button
+                      type="button"
+                      onClick={() => setBreakdownOpen(v => !v)}
+                      className="mt-2 text-xs text-slate-400 hover:text-brand-600 flex items-center gap-1 transition-colors w-full justify-end"
+                    >
+                      {breakdownOpen ? 'Hide breakdown ▴' : 'See breakdown ▾'}
+                    </button>
+
+                    {/* Expandable 3-column breakdown */}
+                    {breakdownOpen && (
+                      <div className="mt-1 rounded-xl border border-slate-200 overflow-hidden text-xs">
+                        <div className="grid grid-cols-[1fr_128px_128px] font-semibold text-slate-400 px-3 py-2 bg-slate-50 border-b border-slate-200">
+                          <span></span>
+                          <span className="text-right whitespace-nowrap">After Optimization</span>
+                          <span className="text-right whitespace-nowrap">Before Optimization</span>
                         </div>
-                      )}
-                      <div className="flex justify-between border-t border-slate-300 pt-2 mt-1">
-                        <span className="flex items-center gap-1 font-bold text-slate-900 text-sm">Total Year-End Owing <InfoTooltip text={TOOLTIPS.yearEndOwing} /></span>
-                        <span className="font-bold text-slate-900 text-lg">${fmt(result.totalLiabilities)}</span>
+                        {tableRows.map(({ label, tip, after, before, prefix, bold }) => (
+                          <div key={label} className={`grid grid-cols-[1fr_128px_128px] px-3 py-2 border-t ${bold ? 'border-slate-300 bg-slate-50/70 font-semibold' : 'border-slate-100'}`}>
+                            <span className={`flex items-center gap-1 ${bold ? 'text-slate-700' : 'text-slate-500'}`}>
+                              {label} {tip && <InfoTooltip text={tip} />}
+                            </span>
+                            <span className={`text-right font-semibold ${bold ? 'text-slate-800' : before !== null && after < before ? 'text-brand-700' : 'text-slate-700'}`}>
+                              {prefix}${fmt(after)}
+                            </span>
+                            <span className={`text-right ${before === null ? 'text-[11px] italic text-slate-400' : 'text-slate-400'}`}>
+                              {before === null ? 'same' : `${prefix}$${fmt(before)}`}
+                            </span>
+                          </div>
+                        ))}
                       </div>
-                      {estimatedRefund > 0 && (
-                        <div className="flex justify-between pt-1 text-brand-700">
-                          <span className="flex items-center gap-1 font-bold text-sm">Estimated Refund <InfoTooltip text={TOOLTIPS.estimatedRefund} /></span>
-                          <span className="font-bold text-lg">${fmt(estimatedRefund)}</span>
-                        </div>
-                      )}
-                    </>
-                  );
-                })()}
-              </div>
+                    )}
+                  </>
+                );
+              })()}
             </SectionCard>
 
             {/* Marginal Rate Chart */}
             <SectionCard title="Combined Marginal Tax Rate">
-              <div className="flex gap-3 items-stretch">
-                <div className="flex flex-col gap-1.5 shrink-0 w-32">
-                  <div className="flex-1 p-1 rounded-xl border-2 border-brand-600 flex flex-col items-center justify-center text-center gap-0.5">
-                    <p className="text-[10px] text-slate-500 leading-tight flex items-center justify-center gap-0.5 flex-wrap">After Optimization <InfoTooltip text={TOOLTIPS.marginalAfter} /></p>
-                    <p className="text-sm font-bold text-slate-900">{fmtPct(result.marginalRateAfter)}</p>
+              <div className="flex gap-2 items-center">
+                <div className="flex flex-col gap-2 shrink-0 w-32">
+                  <div className="flex-1 p-2.5 rounded-xl border-2 border-brand-600 flex flex-col items-center justify-center text-center gap-0.5">
+                    <p className="text-sm font-semibold text-slate-500 leading-tight flex items-center justify-center gap-0.5 flex-wrap">After Opt. <InfoTooltip text={TOOLTIPS.marginalAfter} /></p>
+                    <p className="text-base font-bold text-slate-900">{fmtPct(result.marginalRateAfter)}</p>
                   </div>
-                  <div className="flex-1 p-1 rounded-xl bg-brand-100/55 flex flex-col items-center justify-center text-center gap-0.5">
-                    <p className="text-[10px] text-brand-700 leading-tight flex items-center justify-center gap-0.5 flex-wrap">Save in Tax <InfoTooltip text={TOOLTIPS.taxSaving} /></p>
+                  {/* <div className="flex-1 p-1 rounded-xl bg-brand-100/55 flex flex-col items-center justify-center text-center gap-0.5">
+                    <p className="text-xs text-brand-700 leading-tight flex items-center justify-center gap-0.5 flex-wrap">Save in Tax <InfoTooltip text={TOOLTIPS.taxSaving} /></p>
                     <p className="text-sm font-bold text-slate-900">${fmt(result.taxSaving)}</p>
-                  </div>
-                  <div className="flex-1 p-1 rounded-xl border-2 border-dashed border-slate-300 flex flex-col items-center justify-center text-center gap-0.5">
-                    <p className="text-[10px] text-slate-500 leading-tight flex items-center justify-center gap-0.5 flex-wrap">Before Optimization <InfoTooltip text={TOOLTIPS.marginalBefore} /></p>
-                    <p className="text-sm font-bold text-slate-900">{fmtPct(result.marginalRateBefore)}</p>
+                  </div> */}
+                  <div className="flex-1 p-2.5 rounded-xl border-2 border-dashed border-slate-300 flex flex-col items-center justify-center text-center gap-0.5">
+                    <p className="text-sm font-semibold text-slate-500 leading-tight flex items-center justify-center gap-0.5 flex-wrap">Before Opt.<InfoTooltip text={TOOLTIPS.marginalBefore} /></p>
+                    <p className="text-base font-bold text-slate-900">{fmtPct(result.marginalRateBefore)}</p>
                   </div>
                 </div>
                 <div className="flex-1 min-w-0">
@@ -1266,6 +1307,8 @@ export default function App() {
                     plotData={result.combinedBracketsPlotData}
                     incomeBefore={result.incomeBeforeContributions}
                     incomeAfter={result.incomeAfterContributions}
+                    marginalRateBefore={result.marginalRateBefore}
+                    marginalRateAfter={result.marginalRateAfter}
                   />
                 </div>
               </div>
@@ -1279,6 +1322,9 @@ export default function App() {
         </div>
 
       </main>
+      {/* ── bottom gradient ──────────────────────────────────────────── */}
+      <div className="pointer-events-none absolute bottom-4 inset-x-0 h-4 z-10" style={{ background: 'linear-gradient(to bottom, transparent, #0f172a)' }} />
+      </div>
 
       {/* ── FOOTER / DISCLAIMER ──────────────────────────────────────────── */}
       <footer className="shrink-0 bg-slate-900 border-t border-slate-700/70 shadow-sm">
